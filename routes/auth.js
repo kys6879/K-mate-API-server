@@ -6,6 +6,7 @@ var router = express.Router();
 const mysql = require('../database/mysql.js');
 const cryptoUtil = require('../util/cryptoUtil');
 
+// @ 회원가입
 router.post('/register', async function (req, res, next) {
   let result = {
     status: "",
@@ -69,6 +70,7 @@ router.post('/register', async function (req, res, next) {
     [rows] = await connection.query('SELECT idx FROM sm_eat');
     console.log(rows);
 
+    // 기본 매핑 정보 설정
     let tables = ["eat", "info", "attr"];
     for (let i = 0; i < tables.length; i++) {
       [rows] = await connection.query(`SELECT idx FROM sm_${tables[i]}`);
@@ -104,6 +106,7 @@ router.post('/register', async function (req, res, next) {
 });
 
 
+// @ 로그인
 router.post('/login', function (req, res, next) {
   passport.authenticate('local', {
     session: false
@@ -117,6 +120,7 @@ router.post('/login', function (req, res, next) {
     console.log("[auth.js] /login !!!!", info);
     console.log("[auth.js] /login !!!!", user);
 
+    // 유저 Validation
     if (err | !user || (user == undefined)) {
       console.log("[auth.js] /login  err !!!!", err);
       console.log("[auth.js] /login  user !!!!", user);
@@ -126,7 +130,7 @@ router.post('/login', function (req, res, next) {
 
       return res.status(409).send(result);
     }
-
+    // poassport login
     req.login(user, {
       session: false
     }, (err) => {

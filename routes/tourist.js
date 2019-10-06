@@ -141,7 +141,7 @@ router.get('/map/eat', async function (req, res, next) {
   try {
     [rows] = await conn.query(`SELECT * FROM sm_eat join sm_eat_map on sm_eat.idx = sm_eat_map.eat_idx WHERE sm_eat_map.user_email = ?;
     `, [email]);
-
+    // 모델 생성
     for (let i = 0; i < rows.length; i++) {
       rows[i].touristMap = {
         idx: rows[i].eat_idx,
@@ -174,7 +174,7 @@ router.get('/map/info', async function (req, res, next) {
   let rows;
   try {
     [rows] = await conn.query(`SELECT * FROM sm_info join sm_info_map on sm_info.idx = sm_info_map.info_idx WHERE sm_info_map.user_email = ?`, [email]);
-
+    // 모델 생성
     for (let i = 0; i < rows.length; i++) {
       rows[i].touristMap = {
         idx: rows[i].info_idx,
@@ -209,6 +209,7 @@ router.get('/map/attr', async function (req, res, next) {
   try {
     [rows] = await conn.query(`SELECT * FROM sm_attr join sm_attr_map on sm_attr.idx = sm_attr_map.attr_idx WHERE sm_attr_map.user_email = ?`, [email]);
 
+    // 모델 생성
     for (let i = 0; i < rows.length; i++) {
       rows[i].touristMap = {
         idx: rows[i].attr_idx,
@@ -238,6 +239,7 @@ router.put('/like/:kind/:num', async function (req, res, next) {
   let num = req.params.num;
   let kind = req.params.kind;
   let email = req.user;
+  // 분기처리
   try {
     switch (kind) {
       case "1":
@@ -270,6 +272,7 @@ router.put('/unlike/:kind/:num', async function (req, res, next) {
   let num = req.params.num;
   let kind = req.params.kind;
   let email = req.user;
+  // 분기처리
   try {
     switch (kind) {
       case "1":
