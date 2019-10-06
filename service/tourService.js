@@ -7,6 +7,7 @@ async function getTours() {
 
   try {
     let [rows] = await connection.query('SELECT * FROM sm_tour');
+    connection.release();
     return rows;
   } catch (err) {
     throw new Error(err);
@@ -46,7 +47,9 @@ async function addTour(tourData) {
   console.log("asdf");
   try {
     let params = [idx, userEmail, name, startDate, endDate, adult, infant, child, touristName, tourStyle, tourType, mateEmail, profileImage];
-    return await connection.query('INSERT INTO sm_tour (idx,user_email,name,start_date,end_date,adult,infant,child,tourist_name,tour_style,tour_type,mate,image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,? )', params);
+    let rows = await connection.query('INSERT INTO sm_tour (idx,user_email,name,start_date,end_date,adult,infant,child,tourist_name,tour_style,tour_type,mate,image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,? )', params);
+    connection.release();
+    return rows;
   } catch (err) {
     console.log("123");
     throw new Error(err)
@@ -61,6 +64,7 @@ async function getToursByUserEmail(userEmail) {
 
   try {
     let [rows] = await connection.query('SELECT * FROM sm_tour WHERE user_email = ?', [userEmail]);
+    connection.release();
     return rows;
   } catch (err) {
     throw new Error(err);
@@ -77,6 +81,7 @@ async function updateTitleTourByIdx(title, idx) {
 
   try {
     let [rows] = await connection.query('UPDATE sm_tour SET name = ? WHERE idx = ?', [title, idx]);
+    connection.release();
     return rows;
   } catch (err) {
     throw new Error(err);
@@ -91,6 +96,7 @@ async function deleteTourByIdx(idx) {
 
   try {
     let [rows] = await connection.query('DELETE FROM sm_tour WHERE idx = ?', [idx]);
+    connection.release();
     return rows;
   } catch (err) {
     throw new Error(err);
