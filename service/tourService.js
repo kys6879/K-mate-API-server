@@ -10,6 +10,8 @@ async function getTours() {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -48,6 +50,8 @@ async function addTour(tourData) {
   } catch (err) {
     console.log("123");
     throw new Error(err)
+  } finally {
+    connection.release();
   }
 }
 
@@ -60,6 +64,8 @@ async function getToursByUserEmail(userEmail) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -74,6 +80,8 @@ async function updateTitleTourByIdx(title, idx) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -86,6 +94,8 @@ async function deleteTourByIdx(idx) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -95,7 +105,7 @@ async function isMateByUserEmail(userEmail) {
   const connection = await databaseService.getConnection();
 
   let [rows] = await connection.query('SELECT * FROM sm_user WHERE email = ?', [userEmail]);
-  // connection.release();
+  connection.release();
 
   if (rows.length < 1) {
     isMate = false;

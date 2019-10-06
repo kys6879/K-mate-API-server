@@ -86,7 +86,6 @@ router.post('/register', async function (req, res, next) {
       }
     }
     // [rows] = await connection.query('INSERT INTO sm_user (email,nickname,password,age,gender,type) VALUES (?,?,?,?,?,?)', params);
-    connection.release();
 
     result.status = true;
     result.message = "success insert user";
@@ -95,6 +94,8 @@ router.post('/register', async function (req, res, next) {
     console.log(err);
     console.log("adsf");
     next(err);
+  } finally {
+    connection.release();
   }
 });
 

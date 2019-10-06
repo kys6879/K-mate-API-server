@@ -10,6 +10,8 @@ async function getUsers() {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -23,6 +25,8 @@ async function getUserByEmail(email) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -37,6 +41,8 @@ async function setMateByEmail(email) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -50,6 +56,8 @@ async function updateNicknameByEmail(email, name) {
     return rows;
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -71,6 +79,8 @@ async function likeMate(mate_email, user_email) {
     await connection.query('UPDATE sm_mate SET mlike = mlike + 1  WHERE mate_email = ? AND user_email = ?', [mate_email, user_email]);
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -82,6 +92,8 @@ async function unlikeMate(mate_email, user_email) {
     await connection.query('UPDATE sm_mate SET mlike = mlike - 1  WHERE mate_email = ? AND user_email = ?', [mate_email, user_email]);
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -93,6 +105,8 @@ async function updateUserImage(image, email) {
     await connection.query('UPDATE sm_user SET profile_image = ?  WHERE email = ?', [image, email]);
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
@@ -104,6 +118,8 @@ async function getMappingMate(email) {
     return await connection.query('SELECT * FROM sm_mate WHERE user_email = ? ', [email]);
   } catch (err) {
     throw new Error(err);
+  } finally {
+    connection.release();
   }
 }
 
