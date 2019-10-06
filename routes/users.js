@@ -82,6 +82,9 @@ router.put('/mate/like/:email', async function (req, res, next) {
 
   let mate_email = req.params.email;
 
+  console.log(mate_email);
+  console.log(req.user);
+
   try {
     await userService.likeMate(mate_email, req.user);
     result.status = true;
@@ -168,7 +171,6 @@ router.put('/profile/image', async function (req, res, next) {
   };
 
   let image = req.body.profile_image;
-  console.log(image);
   try {
     await userService.updateUserImage(image, req.user);
     result.status = true;

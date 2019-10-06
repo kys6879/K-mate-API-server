@@ -70,7 +70,7 @@ router.post('/register', async function (req, res, next) {
     }
 
     // 유저 회원가입
-    await connection.query('INSERT INTO sm_user (email,nickname,password,age,gender,type,profile_image , iskakao) VALUES (?,?,?,?,?,?,?,?)', params);
+    await connection.query('INSERT INTO sm_user (email,nickname,password,age,gender,type,profile_image , iskakao , isCustomImage) VALUES (?,?,?,?,?,?,?,?,?)', params);
     for (let i = 0; i < 10; i++) {
       await connection.query('INSERT INTO sm_mate (mate_email,user_email,mlike) VALUES (?,?,?)', [`mate${i}@korea.com`, users.email, 0]);
     }
