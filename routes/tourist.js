@@ -6,6 +6,7 @@ const image2base64 = require('image-to-base64');
 const databaseService = require('../service/databaseService');
 const touristService = require('../service/touristService');
 
+
 async function imageToBase64(path) {
   return new Promise((res, rej) => {
     console.log(path);
@@ -70,6 +71,7 @@ router.get('/all', async function (req, res, next) {
   }
 });
 
+// @ 맛집
 router.get('/eat', async function (req, res, next) {
   let result = {
     status: "",
@@ -88,6 +90,7 @@ router.get('/eat', async function (req, res, next) {
   res.status(200).json(result);
 });
 
+// @ 정보
 router.get('/info', async function (req, res, next) {
   let result = {
     status: "",
@@ -106,6 +109,7 @@ router.get('/info', async function (req, res, next) {
   res.status(200).json(result);
 });
 
+// @ 관광지
 router.get('/attr', async function (req, res, next) {
   let result = {
     status: "",
@@ -124,73 +128,7 @@ router.get('/attr', async function (req, res, next) {
   res.status(200).json(result);
 });
 
-router.post('/all', async function (req, res, next) {
-  let result = {
-    status: "",
-    message: ""
-  };
-
-  let filePath = path.join(__dirname, '../public/dataset/dataset.json');
-  fs.readFile(filePath, async function (err, data) {
-    if (err) {
-      result.status = false;
-      result.message = err;
-      res.status(500).json(result);
-    } else {
-
-      let total = {
-        "eat": [],
-        "info": [],
-        "attr": []
-      };
-
-      data = JSON.parse(data);
-
-      attrResult = data["attr"];
-      eatResult = data["eat"];
-      infoResult = data["info"];
-
-      let conn = await databaseService.getConnection();
-
-      // 여기서 이미지를 불러와야함
-      for (let i = 0; i < attrResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/attr/attr_${attrResult[i].num}.jpeg`);
-          let image = await imageToBase64(imagePath);
-          await conn.query('INSERT INTO sm_attr (idx,name,addr,tag,image) VALUES (?,?,?,?,?)', [attrResult[i].num, attrResult[i].name, attrResult[i].addr, attrResult[i].tag, image]);
-        } catch (err) {
-          console.log(err);
-          return res.status(500).json(err);
-        }
-      }
-
-      for (let i = 0; i < infoResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/info/info_${infoResult[i].num}.png`);
-          let image = await imageToBase64(imagePath);
-          await conn.query('INSERT INTO sm_info (idx,name,subtitle,tag,image) VALUES (?,?,?,?,?)', [infoResult[i].num, infoResult[i].name, infoResult[i].subtitle, infoResult[i].tag, image]);
-        } catch (err) {
-          return res.status(500).json(err);
-        }
-      }
-
-      for (let i = 0; i < eatResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/eat/eat_${eatResult[i].num}.jpeg`);
-          let image = await imageToBase64(imagePath);
-          await conn.query('INSERT INTO sm_eat (idx,name,addr,tag,image) VALUES (?,?,?,?,?)', [eatResult[i].num, eatResult[i].name, eatResult[i].addr, eatResult[i].tag, image]);
-        } catch (err) {
-          return res.status(500).json(err);
-        }
-      }
-
-      result.status = true;
-      result.message = total;
-      res.status(200).json(result);
-    }
-  });
-});
-
+// @ 맛집 매핑
 router.get('/map/eat', async function (req, res, next) {
   let email = req.user;
 
@@ -224,6 +162,7 @@ router.get('/map/eat', async function (req, res, next) {
   }
 });
 
+// @ 정보 매핑
 router.get('/map/info', async function (req, res, next) {
   let email = req.user;
 
@@ -256,6 +195,7 @@ router.get('/map/info', async function (req, res, next) {
   }
 });
 
+// @ 관광지 매핑
 router.get('/map/attr', async function (req, res, next) {
   let email = req.user;
   console.log(email);
@@ -289,6 +229,7 @@ router.get('/map/attr', async function (req, res, next) {
   }
 });
 
+// @ 추천목록 좋아요
 router.put('/like/:kind/:num', async function (req, res, next) {
   let result = {
     status: "",
@@ -320,6 +261,7 @@ router.put('/like/:kind/:num', async function (req, res, next) {
   }
 });
 
+// @ 추천목록 좋아요 취소
 router.put('/unlike/:kind/:num', async function (req, res, next) {
   let result = {
     status: "",
@@ -349,141 +291,6 @@ router.put('/unlike/:kind/:num', async function (req, res, next) {
     result.message = err;
     res.status(500).json(result);
   }
-});
-
-
-router.put('/all', async function (req, res, next) {
-  let result = {
-    status: "",
-    message: ""
-  };
-
-  let filePath = path.join(__dirname, '../public/dataset/dataset.json');
-  fs.readFile(filePath, async function (err, data) {
-    if (err) {
-      result.status = false;
-      result.message = err;
-      res.status(500).json(result);
-    } else {
-
-      let total = {
-        "eat": [],
-        "info": [],
-        "attr": []
-      };
-
-      data = JSON.parse(data);
-
-      attrResult = data["attr"];
-      eatResult = data["eat"];
-      infoResult = data["info"];
-
-      let conn = await databaseService.getConnection();
-
-
-      // 여기서 이미지를 불러와야함
-      for (let i = 0; i < attrResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/attr/attr_${attrResult[i].num}.jpeg`);
-          let image = await imageToBase64(imagePath);
-
-
-          let attraddrArray = attrResult[i].addr.split(" ");
-          let attraddr = "";
-          for (let j = 0; j < attraddrArray.length - 1; j++) {
-            attraddr += attraddrArray[j + 1] + " "
-          }
-
-          let attrTagArray = attrResult[i].tag.split(",");
-          let attrtag = `#${attrTagArray[0]} #${attrTagArray[1]} #${attrTagArray[2]}`;
-
-          total.attr.push({
-            "classname": attrResult[i].class,
-            "num": attrResult[i].num,
-            "name": attrResult[i].name,
-            // "addr": attrResult[i].addr.split(" ")[1],
-            "addr": urlParse(attraddr),
-            // "tag": attrResult[i].tag,
-            "tag": attrtag,
-            "image": image,
-            "url": `http://korean.visitseoul.net/attractions/${attrResult[i].name}_/${attrResult[i].num}?curPage=1`
-          })
-
-          await conn.query(`UPDATE sm_attr SET addr = ? , tag = ? WHERE idx = ${attrResult[i].num}`, [urlParse(attraddr), attrtag]);
-
-        } catch (err) {
-          console.log(err);
-          return res.status(500).json(err);
-        }
-      }
-
-      for (let i = 0; i < infoResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/info/info_${infoResult[i].num}.png`);
-          let image = await imageToBase64(imagePath);
-
-          let infoTagArray = infoResult[i].tag.split(",");
-          console.log(infoTagArray);
-          let infotag = `#${infoTagArray[0]} #${infoTagArray[1]} #${infoTagArray[2]}`;
-
-
-          total.info.push({
-            "classname": infoResult[i].class,
-            "num": infoResult[i].num,
-            "name": infoResult[i].name,
-            "addr": infoResult[i].subtitle,
-            "subtitle": infoResult[i].subtitle,
-            // "tag": infoResult[i].tag,
-            "tag": infotag,
-            "image": image,
-            "url": `http://korean.visitseoul.net/essential-Info-article/${infoResult[i].name}_/${infoResult[i].num}`
-          })
-
-          await conn.query(`UPDATE sm_info SET addr = ? , tag = ? WHERE idx = ${infoResult[i].num}`, [infoResult[i].subtitle, infotag]);
-
-        } catch (err) {
-          return res.status(500).json(err);
-        }
-      }
-
-      for (let i = 0; i < eatResult.length; i++) {
-        try {
-          let imagePath = path.join(__dirname, `../public/image/eat/eat_${eatResult[i].num}.jpeg`);
-          let image = await imageToBase64(imagePath);
-          let eataddrArray = eatResult[i].addr.split(" ");
-          let eataddr = "";
-          for (let j = 0; j < eataddrArray.length - 1; j++) {
-            eataddr += eataddrArray[j + 1] + " "
-          }
-
-          let eatTagArray = eatResult[i].tag.split(",");
-          let eattag = `#${eatTagArray[0]} #${eatTagArray[1]} #${eatTagArray[2]}`;
-
-
-          total.eat.push({
-            "classname": eatResult[i].class,
-            "num": eatResult[i].num,
-            "name": eatResult[i].name,
-            // "addr": eatResult[i].addr,
-            "addr": urlParse(eataddr),
-            "tag": eattag,
-            // "tag": eatResult[i].tag,
-            "image": image,
-            "url": `http://korean.visitseoul.net/eat/${eatResult[i].name}_/${eatResult[i].num}?curPage=1`
-          })
-
-          await conn.query(`UPDATE sm_eat SET addr = ? , tag = ? WHERE idx = ${eatResult[i].num}`, [urlParse(eataddr), eattag]);
-
-        } catch (err) {
-          return res.status(500).json(err);
-        }
-      }
-
-      result.status = true;
-      result.message = total;
-      res.status(200).json(result);
-    }
-  });
 });
 
 module.exports = router;

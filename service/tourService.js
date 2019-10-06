@@ -1,6 +1,7 @@
 const databaseService = require('./databaseService');
 const CONSTANT = require('../enviroment');
 
+// @ 모든 여행 
 async function getTours() {
 
   const connection = await databaseService.getConnection();
@@ -11,11 +12,10 @@ async function getTours() {
     return rows;
   } catch (err) {
     throw new Error(err);
-  } finally {
-    connection.release();
   }
 }
 
+// @ 여행 추가
 async function addTour(tourData) {
 
   let {
@@ -36,13 +36,6 @@ async function addTour(tourData) {
   let infant = tourData.personnels.infant;
   let child = tourData.personnels.child;
 
-  // console.log(new Date());
-
-  // startDate = new Date('2013-11-22 15:30')
-  // endDate = new Date('2013-11-22 15:30')
-
-  // console.log(new Date('2013-11-22 15:30'));
-
   const connection = await databaseService.getConnection();
   console.log("asdf");
   try {
@@ -58,6 +51,7 @@ async function addTour(tourData) {
   }
 }
 
+// @ 유저의 여행 찾기
 async function getToursByUserEmail(userEmail) {
 
   const connection = await databaseService.getConnection();
@@ -73,6 +67,7 @@ async function getToursByUserEmail(userEmail) {
   }
 }
 
+// @ 여행 제목 변경 
 async function updateTitleTourByIdx(title, idx) {
 
   const connection = await databaseService.getConnection();
@@ -90,6 +85,7 @@ async function updateTitleTourByIdx(title, idx) {
   }
 }
 
+// @ 여행 삭제
 async function deleteTourByIdx(idx) {
 
   const connection = await databaseService.getConnection();
@@ -105,6 +101,7 @@ async function deleteTourByIdx(idx) {
   }
 }
 
+// @ 메이트 구분
 async function isMateByUserEmail(userEmail) {
   let isMate = false;
 

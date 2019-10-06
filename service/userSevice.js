@@ -1,5 +1,6 @@
 const databaseService = require('../service/databaseService');
 
+// @ 모든 유저 조회
 async function getUsers() {
 
   const connection = await databaseService.getConnection();
@@ -16,6 +17,7 @@ async function getUsers() {
   }
 }
 
+// @ 이메일로 유저 조회
 async function getUserByEmail(email) {
 
   const connection = await databaseService.getConnection();
@@ -33,6 +35,7 @@ async function getUserByEmail(email) {
   }
 }
 
+// @ 이메일로 메이트 조회
 async function setMateByEmail(email) {
 
   const connection = await databaseService.getConnection();
@@ -50,6 +53,7 @@ async function setMateByEmail(email) {
   }
 }
 
+// @ 이메일로 닉네임 변경
 async function updateNicknameByEmail(email, name) {
 
   const connection = await databaseService.getConnection();
@@ -67,6 +71,7 @@ async function updateNicknameByEmail(email, name) {
   }
 }
 
+// @ 유저 존재 확인
 async function isExistUser(email) {
   try {
     const user = await getUserByEmail(email);
@@ -77,6 +82,7 @@ async function isExistUser(email) {
   }
 }
 
+// @ 메이트 좋아요 
 async function likeMate(mate_email, user_email) {
 
   const connection = await databaseService.getConnection();
@@ -92,6 +98,7 @@ async function likeMate(mate_email, user_email) {
   }
 }
 
+// @ 메이트 좋아요 취소
 async function unlikeMate(mate_email, user_email) {
 
   const connection = await databaseService.getConnection();
@@ -107,6 +114,7 @@ async function unlikeMate(mate_email, user_email) {
   }
 }
 
+// @ 유저 사진 변경
 async function updateUserImage(image, email) {
 
   const connection = await databaseService.getConnection();
@@ -121,6 +129,7 @@ async function updateUserImage(image, email) {
   }
 }
 
+// @ 유저와 메이트 매핑
 async function getMappingMate(email) {
 
   const connection = await databaseService.getConnection();

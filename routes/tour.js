@@ -4,6 +4,7 @@ var router = express.Router();
 const tourService = require('../service/tourService');
 const userService = require('../service/userSevice');
 
+// @ 여행 불러오기
 router.get('/', async function (req, res, next) {
 
   let result = {
@@ -24,6 +25,7 @@ router.get('/', async function (req, res, next) {
   }
 });
 
+// @ 유저의 여행 불러오기 (토큰)
 router.get('/token', async function (req, res, next) {
 
   let result = {
@@ -57,6 +59,7 @@ router.get('/token', async function (req, res, next) {
   return res.json(result);
 });
 
+// @ 이메일로 여행 불러오기
 router.get('/:email', async function (req, res, next) {
 
   let result = {
@@ -92,6 +95,7 @@ router.get('/:email', async function (req, res, next) {
   return res.json(result);
 });
 
+// @ 여행 추가
 router.post('/', async function (req, res, next) {
   console.log(req.body.profileImage);
   let result = {
@@ -132,18 +136,7 @@ router.post('/', async function (req, res, next) {
     profileImage: profileImage
   };
 
-  // console.log(JSON.stringify(tourData));
   console.log(userEmail);
-  // for (let i in tourData) {
-  //   if (!(i == "userEmail")) {
-  //     let d = tourData[i];
-  //     if (!d || d == undefined || d == null) {
-  //       result.status = false;
-  //       result.message = "need Parameter";
-  //       return res.status(400).json(result);
-  //     }
-  //   }
-  // }
 
   try {
     let isMate = await tourService.isMateByUserEmail(tourData.mateEmail);
@@ -166,6 +159,7 @@ router.post('/', async function (req, res, next) {
   }
 });
 
+// @ 여행 변경
 router.put('/', async function (req, res, next) {
 
   let result = {
@@ -192,6 +186,7 @@ router.put('/', async function (req, res, next) {
 
 });
 
+// @ 여행 삭제
 router.delete('/', async function (req, res, next) {
 
   let result = {

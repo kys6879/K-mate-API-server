@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const mysql = require('../database/mysql.js');
 const userService = require('../service/userSevice');
 
+// @ 모든 유저 조회
 router.get('/', async function (req, res, next) {
   let result = {
     status: "",
@@ -21,6 +21,7 @@ router.get('/', async function (req, res, next) {
   }
 });
 
+// @ 모든 유저 조회 (토큰)
 router.get('/token', async function (req, res, next) {
   let result = {
     status: "",
@@ -51,6 +52,7 @@ router.get('/token', async function (req, res, next) {
   }
 });
 
+// @ 닉네임 변경
 router.put('/nickname/:name', async function (req, res, next) {
   let result = {
     status: "",
@@ -74,6 +76,7 @@ router.put('/nickname/:name', async function (req, res, next) {
 
 });
 
+// @ 메이트 좋아요
 router.put('/mate/like/:email', async function (req, res, next) {
   let result = {
     status: "",
@@ -98,6 +101,7 @@ router.put('/mate/like/:email', async function (req, res, next) {
   }
 });
 
+// @ 메이트 좋아요 취소
 router.put('/mate/unlike/:email', async function (req, res, next) {
   let result = {
     status: "",
@@ -119,6 +123,7 @@ router.put('/mate/unlike/:email', async function (req, res, next) {
   }
 });
 
+// @ 메이트 신청
 router.put('/mate/:email', async function (req, res, next) {
   let result = {
     status: "",
@@ -163,6 +168,7 @@ router.put('/mate/:email', async function (req, res, next) {
   }
 });
 
+// @ 프로필 이미지 변경
 router.put('/profile/image', async function (req, res, next) {
   console.log("profile");
   let result = {
@@ -184,6 +190,7 @@ router.put('/profile/image', async function (req, res, next) {
   }
 });
 
+// @ 메이트 매핑
 router.get('/map/mate', async function (req, res, next) {
   let result = {
     status: "",
@@ -205,8 +212,7 @@ router.get('/map/mate', async function (req, res, next) {
   }
 });
 
-
-
+// @ 이메일로 유저 조회
 router.get('/:email', async function (req, res, next) {
   let result = {
     status: "",

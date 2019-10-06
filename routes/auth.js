@@ -35,15 +35,6 @@ router.post('/register', async function (req, res, next) {
     isCustomImage: isCustomImage
   };
 
-  // for (let i in users) {
-  //   let d = users[i];
-  //   if (!d || d == undefined || d == null) {
-  //     result.status = false;
-  //     result.message = "need Parameter";
-  //     return res.status(400).json(result);
-  //   }
-  // }
-
   let pool = await mysql.createPool();
 
   const connection = await pool.getConnection(async conn => conn);
