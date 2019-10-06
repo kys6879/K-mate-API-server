@@ -40,7 +40,9 @@ app.use('/user', usersRouter);
 app.use('/tour', passport.authenticate('jwt', {
   session: false
 }), tourRouter);
-app.use('/tourist', touristRouter);
+app.use('/tourist', passport.authenticate('jwt', {
+  session: false
+}), touristRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

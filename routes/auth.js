@@ -81,8 +81,21 @@ router.post('/register', async function (req, res, next) {
     let tables = ["eat", "info", "attr"];
     for (let i = 0; i < tables.length; i++) {
       [rows] = await connection.query(`SELECT idx FROM sm_${tables[i]}`);
-      for (let j = 0; j < 10; j++) {
-        await connection.query('INSERT INTO sm_tourist_map (tourist_idx,user_email,mlike) VALUES (?,?,?)', [rows[j].idx, users.email, 0]);
+      if (tables[i] == "eat") {
+        for (let j = 0; j < 10; j++) {
+          await connection.query('INSERT INTO sm_eat_map (eat_idx,user_email,mlike) VALUES (?,?,?)', [rows[j].idx, users.email, 0]);
+        }
+      }
+      if (tables[i] == "info") {
+        for (let j = 0; j < 10; j++) {
+          await connection.query('INSERT INTO sm_info_map (info_idx,user_email,mlike) VALUES (?,?,?)', [rows[j].idx, users.email, 0]);
+        }
+
+      }
+      if (tables[i] == "attr") {
+        for (let j = 0; j < 10; j++) {
+          await connection.query('INSERT INTO sm_attr_map (attr_idx,user_email,mlike) VALUES (?,?,?)', [rows[j].idx, users.email, 0]);
+        }
       }
     }
     // [rows] = await connection.query('INSERT INTO sm_user (email,nickname,password,age,gender,type) VALUES (?,?,?,?,?,?)', params);
