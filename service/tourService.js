@@ -57,7 +57,7 @@ async function getToursByUserEmail(userEmail) {
   const connection = await databaseService.getConnection();
 
   try {
-    let [rows] = await connection.query('SELECT * FROM sm_tour WHERE user_email = ?', [userEmail]);
+    let [rows] = await connection.query('SELECT * FROM sm_tour WHERE user_email = ? OR mate = ?', [userEmail, userEmail]);
     connection.release();
     return rows;
   } catch (err) {

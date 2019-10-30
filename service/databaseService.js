@@ -17,25 +17,35 @@ const readDBConfig = () => {
   });
 }
 
-async function createPool() {
-  let dbConfig = await readDBConfig();
+function createPool() {
+  return new Promise((res, rej) => {
+    readDBConfig().then(dbConfig => {
+      let host = dbConfig.host;
+      let user = dbConfig.user;
+      let password = dbConfig.password;
+      let database = dbConfig.database;
+      console.log(dbConfig);
+      let pool = mysql.createPool({
+        host: host,
+        user: user,
+        password: password,
+        database: database
+      });
+      console.log(pool);
+      res(pool)
+    })
+  })
 
-  let host = dbConfig.host;
-  let user = dbConfig.user;
-  let password = dbConfig.password;
-  let database = dbConfig.database
-
-  return mysql.createPool({
-    host: host,
-    user: user,
-    password: password,
-    database: database
-  });
 }
 
-async function getConnection() {
-  let pool = await createPool();
 
+let pool = createPool()
+  .then((res) => {
+    pool = res
+  });
+console.log(pool);
+async function getConnection() {
+  console.log(pool);
   return await pool.getConnection(async conn => conn);
 }
 

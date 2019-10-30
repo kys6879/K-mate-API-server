@@ -46,6 +46,7 @@ router.get('/token', async function (req, res, next) {
     }
 
     let tours = await tourService.getToursByUserEmail(email);
+    console.log(tours);
     result.code = 200;
     result.status = true;
     result.message = tours;
