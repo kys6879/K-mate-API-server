@@ -147,9 +147,10 @@ router.post('/', async function (req, res, next) {
       result.message = "User is Not Mate.";
       return res.status(409).json(result);
     } else {
-      await tourService.addTour(tourData);
+      let idx = await tourService.addTour(tourData);
       result.status = true;
-      result.message = tourData.userEmail;
+      // result.message = tourData.userEmail;
+      result.message = idx;
       return res.status(200).json(result);
     }
 

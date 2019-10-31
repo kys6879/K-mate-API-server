@@ -42,7 +42,7 @@ async function addTour(tourData) {
     let params = [idx, userEmail, name, startDate, endDate, adult, infant, child, touristName, tourStyle, tourType, mateEmail, profileImage];
     let rows = await connection.query('INSERT INTO sm_tour (idx,user_email,name,start_date,end_date,adult,infant,child,tourist_name,tour_style,tour_type,mate,image) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,? )', params);
     connection.release();
-    return rows;
+    return idx;
   } catch (err) {
     console.log("123");
     throw new Error(err)
