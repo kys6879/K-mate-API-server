@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var tourRouter = require('./routes/tour');
 var touristRouter = require('./routes/tourist');
+var chatRouter = require('./routes/chat');
 var authRouter = require('./routes/auth');
 
 const passport = require('passport');
@@ -43,6 +44,10 @@ app.use('/tour', passport.authenticate('jwt', {
 app.use('/tourist', passport.authenticate('jwt', {
   session: false
 }), touristRouter);
+
+app.use('/chat', passport.authenticate('jwt', {
+  session: false
+}), chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
