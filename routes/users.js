@@ -203,6 +203,7 @@ router.get('/map/mate', async function (req, res, next) {
     let [rows] = await userService.getMappingMate(req.user);
     result.status = true;
     result.message = rows;
+    console.log(rows);
     res.status(200).json(result);
   } catch (err) {
     console.log("오류 :  ", err);

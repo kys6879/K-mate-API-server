@@ -24,14 +24,12 @@ function createPool() {
       let user = dbConfig.user;
       let password = dbConfig.password;
       let database = dbConfig.database;
-      console.log(dbConfig);
       let pool = mysql.createPool({
         host: host,
         user: user,
         password: password,
         database: database
       });
-      console.log(pool);
       res(pool)
     })
   })
@@ -43,9 +41,7 @@ let pool = createPool()
   .then((res) => {
     pool = res
   });
-console.log(pool);
 async function getConnection() {
-  console.log(pool);
   return await pool.getConnection(async conn => conn);
 }
 
